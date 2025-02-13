@@ -34,5 +34,5 @@ jobs:
 
       - name: Publish CodeQL Pack
         env:
-          GH_TOKEN: ${{ secrets.GREENPYTHON }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: /opt/codeql/codeql pack publish
