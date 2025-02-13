@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0  # Ensure full commit history is available
 
       - name: Authenticate with GitHub Packages
-        run: echo "${{ secrets.GREENPYTHON }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
 
       - name: Install CodeQL
         run: |
@@ -34,7 +34,7 @@ jobs:
 
       - name: Verify Authentication and Test Access to GHCR
         run: |
-          curl -H "Authorization: Bearer ${{ secrets.GREENPYTHON }}" \
+          curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN  }}" \
                -H "Accept: application/vnd.github.v3+json" \
                https://ghcr.io/v2/timh1975/greenpython/tags/list
 
