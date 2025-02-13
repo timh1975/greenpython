@@ -1,0 +1,12 @@
+library: false
+warnOnImplicitThis: false
+name: timh1975/greenpython
+version: 1.0.0
+description: GreenPython - CodeQL custom queries to develop more energy efficient
+  python code
+license: MIT
+dependencies:
+  codeql/python-all: ^4.0.0
+defaultSuite:
+ -
+  query: queries/test.ql
