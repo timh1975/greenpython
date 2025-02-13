@@ -9,30 +9,28 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      packages: write  # Grants permission to publish to GHCR
-      contents: read   # Grants permission to read the repository
+      contents: read
+      packages: write  # Ensure this is included!
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set GH Token
-        run: echo "GREENPYTHON=${{ secrets.GREENPYTHON }}" >> $GITHUB_ENV
-
       - name: Authenticate with GitHub Packages
-        run: echo "${{ secrets.GREENPYTHON }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
 
       - name: Install CodeQL
         run: |
-           curl -LO https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql-linux64.zip
-           unzip codeql-linux64.zip
-           chmod +x codeql/codeql
-           sudo mv codeql /opt/codeql
-           echo "/opt/codeql" >> $GITHUB_PATH
-      
+          curl -LO https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql-linux64.zip
+          unzip codeql-linux64.zip
+          chmod +x codeql/codeql
+          sudo mv codeql /opt/codeql
+          echo "/opt/codeql" >> $GITHUB_PATH
 
       - name: Install CodeQL Dependencies
-        run: /opt/codeql/codeql pack install     
+        run: /opt/codeql/codeql pack install
 
       - name: Publish CodeQL Pack
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: /opt/codeql/codeql pack publish
