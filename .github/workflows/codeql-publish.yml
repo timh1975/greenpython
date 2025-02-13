@@ -1,0 +1,31 @@
+name: Publish CodeQL Pack
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write  # Grants permission to publish to GHCR
+      contents: read   # Grants permission to read the repository
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate with GitHub Packages
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+
+      - name: Install CodeQL
+        run: |
+          curl -LO https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql-linux64.zip
+          unzip codeql-linux64.zip
+          chmod +x codeql/codeql
+          sudo mv codeql/codeql /usr/local/bin/
+
+      - name: Publish CodeQL Pack
+        run: |
+          codeql pack publish
