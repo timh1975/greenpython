@@ -16,6 +16,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Set GH Token
+        run: echo "GREENPYTHON=${{ secrets.GREENPYTHON }}" >> $GITHUB_ENV
+
       - name: Authenticate with GitHub Packages
         run: echo "${{ secrets.GREENPYTHON }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
 
