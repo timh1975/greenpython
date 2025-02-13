@@ -31,8 +31,8 @@ jobs:
            echo "/opt/codeql" >> $GITHUB_PATH
       
 
-      -name: Install CodeQL Dependencies
-      run: /opt/codeql/codeql pack install     
+      - name: Install CodeQL Dependencies
+        run: /opt/codeql/codeql pack install     
 
-      -name: Publish CodeQL Pack
-      run: /opt/codeql/codeql pack publish
+      - name: Publish CodeQL Pack
+        run: /opt/codeql/codeql pack publish
