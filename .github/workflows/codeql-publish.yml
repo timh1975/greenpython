@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write  # Ensure this is included!
+      packages: write  # Ensure permission to publish to GHCR
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Ensures full commit history is available
+          fetch-depth: 0  # Ensure full commit history is available
 
       - name: Authenticate with GitHub Packages
         run: echo "${{ secrets.GREENPYTHON }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
@@ -32,7 +32,14 @@ jobs:
       - name: Install CodeQL Dependencies
         run: /opt/codeql/codeql pack install
 
+      - name: Verify Authentication and Test Access to GHCR
+        run: |
+          curl -H "Authorization: Bearer ${{ secrets.GREENPYTHON }}" \
+               -H "Accept: application/vnd.github.v3+json" \
+               https://ghcr.io/v2/timh1975/greenpython/tags/list
+
       - name: Publish CodeQL Pack
         env:
           GH_TOKEN: ${{ secrets.GREENPYTHON }}
         run: /opt/codeql/codeql pack publish
+
