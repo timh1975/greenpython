@@ -43,5 +43,5 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: | 
           echo "$GH_TOKEN"
-          /opt/codeql/codeql pack publish
+          /opt/codeql/codeql pack publish --repository ghcr.io/timh1975/greenpython --version 1.0.0 --name greenpython
 
